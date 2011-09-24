@@ -13,7 +13,7 @@ other than javascript.
     
 
 ## Yes, The Mushroom Inheritance!
-The whole forest of class
+The whole forest of a Class
 
 ### The Fore-Story
 
