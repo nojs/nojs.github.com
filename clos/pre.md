@@ -6,16 +6,14 @@ And now for something completely different: the inheritance!
  that shit on the internet!
 
 We introduce singular, simple, profitable multiple inheritance system.
-It's built entirely on prototypes (no arrays lookups), and
-it'll make your soul relaxed of pain and your heart warm especially if you heard
+It's built entirely of prototypes (and not a single array lookup), and
+it'll make your soul relaxed and your heart warm especially if you've heard
 anything of Io or Lua or Self or whatever prototypal language
-other than javascript.
-    
+other than javascript. Enter the whole forest of a Class!
 
-## Yes, The Mushroom Inheritance!
-The whole forest of a Class
+## Mushroom Inheritance
 
-### The Fore-Story
+### Fore-Story
 
 We need an `__extend` function:
 
@@ -71,19 +69,19 @@ To keep instances a bit different from classes let's do this way:
         d0.init && d0.init.apply(d0,arguments)
         return d0}})
 
-So now we can do the last bit of previous pirouette like this:
+So now we can do the last bit of bike pirouette like this:
 
     var b0=Bike.new("Mike")
     b0.go()
 
     >> hey, Mike, din don!
 
-That would suffice for any complex task of javascript developer, and
+That would suffice for any semi-complex task of javascript developer, and
 that makes us content with terminology to be used in next article.
 
-But to increase our happiness, we'd spend another minute or two yet
-here. What if we embed dictionaries in our nifty objects? Surely we
-have them. And if we want them to be modifiable from leave-instances,
+But to be even more happy, we'd spend another minute or two here.
+What if we embed dictionaries in our nifty objects? Surely we
+would have them embedded. And if we want them to be modifiable from leaves-instances,
 but yet stay unchanged in class-instances, we could do like this:
 
     function __extend(o,e){
