@@ -1,4 +1,4 @@
-<link href="http://kevinburke.bitbucket.org/markdowncss/markdown.css" rel="stylesheet"></link>
+<link href="_css/markdown.css" rel="stylesheet"></link>
 
 And now for something completely different: the inheritance!
 
