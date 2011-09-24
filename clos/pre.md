@@ -13,7 +13,7 @@ other than javascript. Enter the whole forest of a Class!
 
 ## Mushroom Inheritance
 
-### Fore-Story
+### The Fore-Story
 
 We need an `__extend` function:
 
