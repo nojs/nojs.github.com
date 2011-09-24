@@ -1,4 +1,4 @@
-<link href="/_css/markdown.css" rel="stylesheet"></link>
+<link href="/css/markdown.css" rel="stylesheet"></link>
 
 And now for something completely different: the inheritance!
 
