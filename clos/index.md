@@ -2,4 +2,4 @@
 
 Coming soon.
 
-You may read [back story](pre.html) in the meantime.
+You may read the [back story](pre.html) in the meantime.
