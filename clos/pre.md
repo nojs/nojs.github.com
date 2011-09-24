@@ -90,7 +90,7 @@ but yet stay unchanged in class-instances, we could do like this:
     function __delta(o){
       return __clone(o)}
 
-So that's like it. And all mushrooms [following](/clos/).
+So that's like it. And all the mushrooms [following](/clos/).
 
         
 
