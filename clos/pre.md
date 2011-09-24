@@ -2,8 +2,8 @@
 
 And now for something completely different: the inheritance!
 
-\- Inheritance? Oh, come on! How much of it yet! Go and find a bunch of that shit on
-the internet.
+>Inheritance? Oh, come on! How much of it yet! Go and find a bunch of
+ that shit on the internet!
 
 We introduce singular, simple, profitable multiple inheritance system.
 It's built entirely on prototypes (no arrays lookups), and
