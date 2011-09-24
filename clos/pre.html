@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>pre.md</title>
+
+</head>
+
+<body>
+
+<p><link href="http://kevinburke.bitbucket.org/markdowncss/markdown.css" rel="stylesheet"></link></p>
+
+<p>And now for something completely different: the inheritance!</p>
+
+<p>- Inheritance? Oh, come on! How much of it yet! Go and find a bunch of that shit on
+the internet.</p>
+
+<p>We introduce singular, simple, profitable multiple inheritance system.
+It's built entirely on prototypes (no arrays lookups), and
+it'll make your soul relaxed of pain and your heart warm especially if you heard
+anything of Io or Lua or Self or whatever prototypal language
+other than javascript.</p>
+
+<h2>Yes, The Mushroom Inheritance!</h2>
+
+<p>The whole forest of class</p>
+
+<h3>The Fore-Story</h3>
+
+<p>We need an <code>__extend</code> function:</p>
+
+<pre><code>function __extend(o,e){
+  for(var k in e){
+    o[k]=e[k]}
+  return o;
+}
+</code></pre>
+
+<p>a <code>__clone</code> function:</p>
+
+<pre><code>function __clone(o){
+  return {__proto__:o}
+}
+</code></pre>
+
+<p>and pretty like nothing more.</p>
+
+<p>Let's put them together and call the thing <code>Obj</code>:</p>
+
+<pre><code>var Obj={
+  extend:function(e){
+    return __extend(this,e)},
+  clone:function(){
+    return __clone(this)},
+}
+</code></pre>
+
+<p>Now we could create all kinds of things just like this:</p>
+
+<pre><code>var Wheeled=Obj.clone().extend({
+  wheels:0,
+  go:function(){console.log("tag dag dag da")},
+})
+
+var Bike=Wheeled.clone().extend({
+  owner_name:"nobody",
+  go:function(){console.log("hey, "+this.owner_name+", din don!")},
+  init:function(owner){this.owner_name=owner;return this}
+})
+
+var b0=Bike.clone().init("Mike")
+b0.go()
+
+&gt;&gt; hey, Mike, din don!
+</code></pre>
+
+<p>To keep instances a bit different from classes let's do this way:</p>
+
+<pre><code>function __delta(o){
+  return delta}
+
+Obj.extend({
+  new:function(){
+    var d0=__delta(this)
+    d0.init &amp;&amp; d0.init.apply(d0,arguments)
+    return d0}})
+</code></pre>
+
+<p>So now we can do the last bit of previous pirouette like this:</p>
+
+<pre><code>var b0=Bike.new("Mike")
+b0.go()
+
+&gt;&gt; hey, Mike, din don!
+</code></pre>
+
+<p>That would suffice for any complex task of javascript developer, and
+that makes us content with terminology to be used in next article.</p>
+
+<p>But to increase our happiness, we'd spend another minute or two yet
+here. What if we embed dictionaries in our nifty objects? Surely we
+have them. And if we want them to be modifiable from leave-instances,
+but yet stay unchanged in class-instances, we could do like this:</p>
+
+<pre><code>function __extend(o,e){
+  return o}
+
+function __delta(o){
+  return __clone(o)}
+</code></pre>
+
+<p>So that's like it. And all mushrooms <a href="/clos/">following</a>.</p>
+
+</body>
+</html>
