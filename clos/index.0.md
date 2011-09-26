@@ -3,7 +3,7 @@
 Was your first object-oriented experience related to C++/Java/Ruby? Then
 you should go [left](#left). If you were introduced to OO by
 Smalltalk or Self or Lua or Perl or Python go [right](#right). If you are into the
-Art of Metaobject Protocol thing, just go [straight ahead](#straight-ahead)
+Art of Metaobject Protocol thing, just go [straight ahead](#straight-ahead).
 
 ### Left # {#left}
 
