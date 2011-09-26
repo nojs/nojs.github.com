@@ -112,13 +112,13 @@ Thus, we could create and use 'classes' as simple as this:
     >> tag dag da
     >> din don, here's Mike going!
 
-Let's emphasize intended semantics of `__clone()`, `__extend()` and
-`__delta()` functions. `__clone()` is just like 'clone' message in Io: it returns new empty
-dict with [proto] set to refer to original cloned object. `__extend()` intended to
+Let's emphasize the intended semantics of `__clone()`, `__extend()` and
+`__delta()` functions. First, `__clone()` is just like 'clone' message in Io: it returns new empty
+dict with [proto] set to refer to original cloned object. Then, `__extend()` intended to
 act on newly created clone (call it C). It overwrites any properties
 found directly in C with it's arguments properties, but doesn't affect
-any of C's prototypes. `__delta()` is used at time of instance
-creation. Basically it creates 'deep clone' of passed object, so any
+any of C's prototypes. And lastly, `__delta()` is used at time of instance
+creation: basically it creates 'deep clone' of passed object, so any
 property set on embedded dictionaries doesn't affect prototypes' embedded
 dictionaries. Method's name is inspired by the fact that we can obtain
 clone-obj and cloned-obj difference by inspecting own properties of clone's
