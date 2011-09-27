@@ -153,10 +153,13 @@ to practical ones.
 
     var Aspect=Obj.clone().extend({
       def:function(name,pp,body){},
-      extend:function(body){},
       new:function(){}})
 
+## Practical Mushroom
 
+So far so good. And now I want practical Classes that allow me to
+access their properties at runtime. Having Aspects up and running, it
+turns quite simple to implement.
 
 <!--  LocalWords:  linearization javascript runtime Lua CLOS dicts OO js
  -->
