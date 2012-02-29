@@ -19,8 +19,9 @@ Here are some experiments:
 * [CLOS](/clos) CLOS-like object system for javascript
 
 Actually, it's prototype-based implementation of base classes
-serialization [[c3]] algorithm like that found in python or perl.
-
+linearization [c3](http://en.wikipedia.org/wiki/C3_linearization)
+algorithm found in python or perl. It does allow to have multiple
+inheritance in prototype-coherent javascriptish way.
 
 * [gg](/gg) Simple Interactive Grammar Generator
 
@@ -31,7 +32,7 @@ javascript-land, that I couldn't resist having it here.
 
 * [jscc](/jscc) Javascript compiler compiler
 
-I don't get what that title could stand for, but it's extensible processing
+I don't quite get what that title could stand for, but it's extensible processing
 tool for js that allows you to have any and all of that fancy or not
 syntax extensions and all AST-manipulation and macro-defining facilities.
 
