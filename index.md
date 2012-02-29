@@ -36,15 +36,15 @@ tool for js that allows you to have any and all of that fancy or not
 syntax extensions and all AST-manipulation and macro-defining
 facilities.
 
-It currently has some interesting extensions.
-
-   * Structural pattern matching
-   * Destructuring assignment
-   * Destructuring properties access
+* Some interesting extensions:
+    * Structural pattern matching
+    * Destructuring assignment
+    * Destructuring properties access
 
 * [Actor](/actor) Erlang-like message passing
 
-Allows to have actors running on nodes evenly in browser and on
-server. Consumed well with syntax bindings.
+  Allows to have actors running on nodes evenly in browser and on
+  server. Consumed well with syntax bindings.
+
 
 
