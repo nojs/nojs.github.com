@@ -43,7 +43,7 @@ facilities.
 
 * [Actor](/actor) Erlang-like message passing
 
-  Allows to have actors running on nodes evenly in browser and on
+  Allows erlang-line processes to run on nodes evenly in browser and on
   server. Consumed well with syntax bindings.
 
 
