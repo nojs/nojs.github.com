@@ -3,7 +3,7 @@
 ## What's The Buzz
 
 One of initial descriptions of the project, then hosted at
-http://github.com/nojs was
+[github.com/nojs](http://github.com/nojs) was
 > Sane language to produce javascript code that works in browser and
 > on node.js
 
