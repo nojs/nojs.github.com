@@ -2,15 +2,37 @@
 
 ## What's The Buzz
 
-One of initial descriptions of project, then hosted at
+One of initial descriptions of the project, then hosted at
 http://github.com/nojs was
 > Sane language to produce javascript code that works in browser and
-  on node.js
+> on node.js
 
 Some time passed, more experiments followed, and it became obvious
 that this no-js kind of approach applies to a variety of topics and has a
 number of pleasant implications. That was the time when project was
 killed and nojs organization spawned at github under the same url.
 
+
+
+Here are some experiments:
+
+* [CLOS](/clos) CLOS-like object system for javascript
+
+Actually, it's prototype-based implementation of base classes
+serialization [[c3]] algorithm like that found in python or perl.
+
+
+* [gg](/gg) Simple Interactive Grammar Generator
+
+It's metalua's gg inspired, or, to be more precise, metalua's gg rip
+implementation in javascript. It was so awesome to read all of
+Fabien's posts on it, and I wanted it so badly in
+javascript-land, that I couldn't resist having it here.
+
+* [jscc](/jscc) Javascript compiler compiler
+
+I don't get what that title could stand for, but it's extensible processing
+tool for js that allows you to have any and all of that fancy or not
+syntax extensions and all AST-manipulation and macro-defining facilities.
 
 
