@@ -18,8 +18,8 @@ Here are some experiments:
 
 * [CLOS](/clos) CLOS-like object system for javascript
 
-Actually, it's prototype-based implementation of base classes
-linearization [c3](http://en.wikipedia.org/wiki/C3_linearization)
+Actually, it's prototype-based implementation of
+[c3 linearization](http://en.wikipedia.org/wiki/C3_linearization)
 algorithm found in python or perl. It does allow to have multiple
 inheritance in prototype-coherent javascriptish way.
 
