@@ -38,9 +38,9 @@ facilities.
 
 It currently has some interesting extensions.
 
-    * Structural pattern matching
-    * Destructuring assignment
-    * Destructuring properties access
+   * Structural pattern matching
+   * Destructuring assignment
+   * Destructuring properties access
 
 * [Actor](/actor) Erlang-like message passing
 
