@@ -27,8 +27,8 @@ inheritance in prototype-coherent javascriptish way.
 
 It's metalua's gg inspired, or, to be more precise, metalua's gg rip
 implementation in javascript. It was so awesome to read all of
-Fabien's posts on it, and I wanted it so badly in
-javascript-land, that I couldn't resist having it here.
+[Fabien's posts](http://metalua.blogspot.com/) on it, and I wanted it so badly in
+javascript-land, that I couldn't resist having it here ripped-off.
 
 * [jscc](/jscc) Javascript compiler compiler
 
