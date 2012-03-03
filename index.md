@@ -1,5 +1,9 @@
 <link rel="stylesheet" href="/css/markdown.css"></link>
 
+### Some bookmarks for future works
+
+* [ast diff](/ast-diff) Diff algorithm applicable to AST
+
 ## What's The Buzz
 
 One of initial descriptions of the project, then hosted at
