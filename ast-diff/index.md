@@ -5,7 +5,7 @@
 
 Found
 [one](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.89.7559&rep=rep1&type=pdf)
-Quite interesting paper.
+quite interesting paper.
 To be annotated later.
 
 
