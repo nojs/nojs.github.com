@@ -10,7 +10,7 @@
 
 #### Other stuff
 
-* [7 Languages In 7 Weeks](#) Nice hands-on introduction to crucial
+* [7 Languages In 7 Weeks](#) Nice hands-on experience with some crucial
   computer languages paradigms.
 
 
