@@ -5,7 +5,15 @@
 
 #### OOP
 
-* [The Art Of Metaobject Protocol](./amop) and related [amop-overview](#).
+* [The Art Of Metaobject Protocol](./amop) and related
+  [amop-overview](#).
+
+
+#### Static Metaprogramming
+
+* [On Lisp](#)
+* [metalua](http://metalua.blogspot.com) Very nice approach to
+  static metaprogramming with non-s-exp language syntax.
 
 
 #### Other stuff
