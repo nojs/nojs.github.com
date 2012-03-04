@@ -9,7 +9,7 @@
   [amop-overview](#).
 * [A Monotonic Superclass Linearization for Dylan](http://192.220.96.201/dylan/linearization-oopsla96.html)
   Original (?) paper behind c3 linearization.
-* [[Add some cool Smalltalk overview]]
+* Here to be added some cool Smalltalk overview
 
 #### Static Metaprogramming
 
