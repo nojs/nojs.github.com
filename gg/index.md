@@ -16,7 +16,7 @@
     var e0=E0.parse(ls)
     __eql(e0,
       [Op +
-        [Id a],
+        [Id a]
         [Op +
           [Op * [Id b] [Id c]]
           [Op +
