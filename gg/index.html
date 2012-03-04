@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>index.md</title>
+
+</head>
+
+<body>
+
+<link rel="stylesheet" href="/css/markdown.css"></link>
+
+<h4 id="simple_interactive_grammar_generator">Simple Interactive Grammar Generator</h4>
+<pre><code>var lx=gg.lexer()
+var E0=gg.expr({
+  infix:[
+    [["*"],{prec:10,builder:function(e1,op,e2){return ["Op","*",e1,e2]}}]
+    [["/"],{prec:10,builder:function(e1,op,e2){return ["Op","/",e1,e2]}}]
+    [["+"],{prec:20,builder:function(e1,op,e2){return ["Op","+",e1,e2]}}]
+    [["-"],{prec:20,builder:function(e1,op,e2){return ["Op","+",e1,e2]}}]],
+  primary:gg.id})
+
+var ls=lx.extract("a+b*c+d/e+f*k/s")
+var e0=E0.parse(ls)
+__eql(e0,
+  [Op +
+    [Id a],
+    [Op +
+      [Op * [Id b] [Id c]]
+      [Op +
+        [Op / [Id d] [Id e]] 
+        [Op * [Id f] [Op / [Id k] [Id s]]]]]])
+</code></pre>
+</body>
+</html>
