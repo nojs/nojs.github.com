@@ -1,9 +1,5 @@
 <link rel="stylesheet" href="/css/markdown.css"></link>
 
-### Some bookmarks for future works
-
-* [ast diff](/ast-diff) Diff algorithm applicable to AST
-
 ## What's The Buzz
 
 One of initial descriptions of the project, then hosted at
@@ -51,4 +47,9 @@ facilities.
   server. Consumed well with syntax bindings.
 
 
+### Some bookmarks for future works
+
+* [ast diff](/ast-diff) Diff algorithm applicable to AST
+* Minimal emacs for noder
+* Minimal linux for noder
 
