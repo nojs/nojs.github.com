@@ -75,7 +75,8 @@ ctx.content)
       while(i < l)
         apply(this.ctx = v[i++]);
 восстановим `.position`, если не `prevNotNewList`:
-(если prevNewList)
+(если prevNewList, другими словами, т.е. когда в ситуации массив в
+массиве мы закончили обрабатывать вложенный массив)
 
       prevNotNewList || (this.position = prevPos);
     }
