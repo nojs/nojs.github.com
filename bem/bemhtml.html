@@ -21,7 +21,9 @@
 
 <h3>Шаблон по-умолчанию</h3>
 
-<p>создадим контекст шаблона</p>
+<h4>Инициализация</h4>
+
+<p>Создадим контекст шаблона:</p>
 
 <pre><code>function BEMContext(context, apply_) {
   this.ctx = context;
@@ -39,6 +41,454 @@
   this.mods = undefined;
   this.elemMods = undefined;
 };
+</code></pre>
+
+<p>Первым (на старте) обрабатывается шаблон с !this.<em>mode: сначала
+isSimple(this.ctx), потом !this.ctx, потом this.</em>.isArray(this.ctx) и потом
+режим по-умолчанию true.</p>
+
+<p>Начнем со случая, когда текущий контекст -- простое значение, а
+именно, согласно isSimple, когда ctx -- строка, число или boolean.</p>
+
+<pre><code>BEMContext.prototype.isSimple = function isSimple(obj) {
+  var t = typeof obj;
+  return t === 'string' || t === 'number' || t === 'boolean';
+};
+</code></pre>
+
+<p>контекст установлен, но не <code>boolean</code> -- положим его в буфер:</p>
+
+<pre><code>this._.isSimple(this.ctx): {
+  this._listLength--;
+  var ctx = this.ctx;
+  (ctx &amp;&amp; ctx !== true || ctx === 0) &amp;&amp; this._buf.push(ctx);
+}
+</code></pre>
+
+<p><code>!this.ctx</code> не сделает ничего, а <code>this._.isArray(ctx)</code> разбирает
+массив:</p>
+
+<pre><code>this._.isArray(this.ctx): {
+  var v = this.ctx,
+  l = v.length,
+  i = 0,
+  prevPos = this.position,
+  prevNotNewList = this._notNewList;
+</code></pre>
+
+<p>Почему-то:</p>
+
+<pre><code>  if(prevNotNewList) {
+    this._listLength += l - 1;
+  } else {
+    this.position = 0;
+    this._listLength = l;
+  }
+
+  this._notNewList = true;
+</code></pre>
+
+<p>И итерация по элементам массива! (В том числе если сюда передан
+ctx.content) </p>
+
+<pre><code>  while(i &lt; l)
+    apply(this.ctx = v[i++]);
+</code></pre>
+
+<p>восстановим <code>.position</code>, если не <code>prevNotNewList</code>
+(если prevNewList, другими словами, т.е. когда в ситуации массив в
+массиве мы закончили обрабатывать вложенный массив):</p>
+
+<pre><code>  prevNotNewList || (this.position = prevPos);
+}
+</code></pre>
+
+<p>Теперь случай по умолчанию:</p>
+
+<pre><code>true: {
+  var vBlock = this.ctx.block, //XXX если когда-либо нужна проверка [1.0] то
+                               //здесь this.ctx будет undefined
+  vElem = this.ctx.elem,
+</code></pre>
+
+<p>Для чего нужны vThing? (Ответ: v используется как сокращение this.ctx)</p>
+
+<pre><code>  block = this._currBlock || this.block;
+  this.ctx || (this.ctx = {}); //[1.0]
+</code></pre>
+
+<p>Создадим контекст!</p>
+
+<pre><code>  local(
+    this._mode = 'default',
+</code></pre>
+
+<p>Это первая мода</p>
+
+<pre><code>    this._links = this.ctx.links || this._links,
+</code></pre>
+
+<p>Возьмем <code>links</code> из контекста. Если они там есть.</p>
+
+<pre><code>    this.block = vBlock || (vElem ? block : undefined),
+    //vBlock || if(vElem) {block} else {undefined}
+
+    this._currBlock = vBlock || vElem ? undefined : block,
+</code></pre>
+
+<p>Наверное, это блок для обработки элемента:
+Если обрабатываем элемент, это или текущий блок с
+верхнего уровня, или блок текущего уровня. (Да,
+но кто устанавливает this.block?)</p>
+
+<pre><code>    this.elem = this.ctx.elem, //ok
+    this.mods = (vBlock ? this.ctx.mods : this.mods) || {},
+</code></pre>
+
+<p>Как и почему определяем здесь модификаторы?</p>
+
+<pre><code>    this.elemMods = this.ctx.elemMods || {}
+</code></pre>
+
+<p>Модификаторы элемента!</p>
+
+<pre><code>  ) {
+</code></pre>
+
+<p>Что значат эти {} после local? Видимо, это его scope?</p>
+
+<pre><code>    (this.block || this.elem) ?
+      (this.position = (this.position || 0) + 1) :
+      this._listLength--;
+</code></pre>
+
+<p>Туннелируем в моду default!</p>
+
+<pre><code>    apply();
+  }
+}
+</code></pre>
+
+<h4>Мода <code>default</code></h4>
+
+<pre><code>default: {
+  var _this = this,
+  BEM_ = _this.BEM,
+  v = this.ctx,
+  buf = this._buf,
+  tag;
+</code></pre>
+
+<p>Мода <code>tag</code> возвратит тэг из пользовательского шаблона или <code>undefined</code>,
+и тогда установим ее в <code>div</code>:</p>
+
+<pre><code>  tag = apply(this._mode = 'tag');
+  typeof tag === 'undefined' &amp;&amp; (tag = v.tag);
+  typeof tag === 'undefined' &amp;&amp; (tag = 'div');
+
+  if(tag) {
+</code></pre>
+
+<p>I wonder what if not?</p>
+
+<pre><code>    var jsParams, js;
+    if(this.block &amp;&amp; v.js !== false) {        //ok: we go for js mode
+                                           //  if it's in ctx
+      js = apply(this._mode = 'js');          //ok
+      js = js?                             //ok if(js)
+             this._.extend(v.js,              //ok extend ctx.js with js
+                        js === true?
+                          {} :
+                          js) :
+             v.js === true?                //ok set js to {}
+               {} :                        //  or to ctx.js
+               v.js;                       //  if(ctx.js &amp;&amp;
+                                           //     ctx.js!==true)
+      js &amp;&amp; (
+        (jsParams = {})[
+          BEM_.INTERNAL.buildClass(this.block, v.elem)] = js);}
+</code></pre>
+
+<p><code>{"b-bla__e-elt":js}</code></p>
+
+<pre><code>    buf.push('&lt;', tag);  //ok
+
+    var isBEM = apply(this._mode = 'bem'); //XXX
+</code></pre>
+
+<p>Что такое <code>bem</code> мода? Является ли контекст блоком или элементом?</p>
+
+<pre><code>    typeof isBEM === 'undefined' &amp;&amp;
+      (isBEM = typeof v.bem === 'undefined' ?
+        v.block || v.elem :
+        v.bem);
+
+    var cls = apply(this._mode = 'cls');
+    cls || (cls = v.cls);
+</code></pre>
+
+<p>Установили класс через моду или взяли прямо из контекста</p>
+
+<pre><code>    var addJSInitClass = v.block &amp;&amp; jsParams;
+    if(isBEM || cls) {
+</code></pre>
+
+<p>Теперь будем создавать имя класса.</p>
+
+<pre><code>      buf.push(' class="');
+      if(isBEM) {
+</code></pre>
+
+<p>А если не <code>isBEM</code>, то в классе будет только <code>i-bem</code> (если это понадобится)</p>
+
+<pre><code>        BEM_.INTERNAL.buildClasses(this.block, v.elem, v.elemMods || v.mods, buf);
+
+        var mix = apply(this._mode = 'mix');
+        v.mix &amp;&amp; (mix = mix? mix.concat(v.mix) : v.mix);
+</code></pre>
+
+<p>Миксин делаем здесь! TODO: describe mixin production</p>
+
+<pre><code>        if(mix) {
+          var visited = {};
+
+          function visitedKey(block, elem) {
+            return (block || '') + '__' + (elem || '');}
+
+          visited[visitedKey(this.block, this.elem)] = true;
+
+          // Transform mix to the single-item array if it's not array
+          if (!this._.isArray(mix)) mix = [mix];
+          for (var i = 0; i &lt; mix.length; i++) {
+            var mixItem = mix[i],
+            hasItem = mixItem.block || mixItem.elem,
+            block = mixItem.block || mixItem._block || _this.block,
+            elem = mixItem.elem || mixItem._elem || _this.elem;
+
+            hasItem &amp;&amp; buf.push(' ');
+            BEM_.INTERNAL[hasItem? 'buildClasses' : 'buildModsClasses'](
+              block,
+              mixItem.elem || mixItem._elem ||
+                (mixItem.block ? undefined : _this.elem),
+              mixItem.elemMods || mixItem.mods,
+              buf);
+
+            if(mixItem.js) {
+              (jsParams || (jsParams = {}))[BEM_.INTERNAL.buildClass(block, mixItem.elem)] = mixItem.js === true? {} : mixItem.js;
+              addJSInitClass || (addJSInitClass = block &amp;&amp; !mixItem.elem);}
+
+            // Process nested mixes
+            if (hasItem &amp;&amp; !visited[visitedKey(block, elem)]) {
+              visited[visitedKey(block, elem)] = true;
+              var nestedMix = apply(
+                this.block = block,
+                this.elem = elem,
+                'mix');
+
+              if (nestedMix) {
+                for (var j = 0; j &lt; nestedMix.length; j++) {
+                  var nestedItem = nestedMix[j];
+                  if (!nestedItem.block &amp;&amp;
+                      !nestedItem.elem ||
+                      !visited[visitedKey(
+                        nestedItem.block,
+                        nestedItem.elem
+                      )]) {
+                    nestedItem._block = block;
+                    nestedItem._elem = elem;
+                    mix.splice(i + 1, 0, nestedItem);}}}}}}}
+
+      cls &amp;&amp; buf.push(isBEM? ' ' : '', cls);
+
+      addJSInitClass &amp;&amp; buf.push(' i-bem');
+      buf.push('"');
+    }
+</code></pre>
+
+<p>Построим onclick-хак для передачи js-параметров</p>
+
+<pre><code>    if(jsParams) {
+      var jsAttr = apply(this._mode = 'jsAttr');
+      buf.push(
+        ' ', jsAttr || 'onclick', '="return ',
+        this._.attrEscape(JSON.stringify(jsParams)),
+        '"');
+    }
+</code></pre>
+
+<p>Построим аттрибуты из словаря <code>ctx.attrs</code></p>
+
+<pre><code>    var attrs = apply(this._mode = 'attrs');
+    attrs = this._.extend(attrs, v.attrs); // NOTE: возможно стоит делать массив, чтобы потом быстрее сериализовывать
+    if(attrs) {
+      var name; // TODO: разобраться с OmetaJS и YUI Compressor
+      for(name in attrs) {
+        if (attrs[name] === undefined) continue;
+        buf.push(' ', name, '="', this._.attrEscape(attrs[name]), '"');}}}
+</code></pre>
+
+<p>Построили тэг. Если это был короткий тэг, тут же его закроем:</p>
+
+<pre><code>  if(this._.isShortTag(tag)) {
+    buf.push('/&gt;');
+  } else {
+    tag &amp;&amp; buf.push('&gt;');
+</code></pre>
+
+<p>А здесь построим контент для полного тэга:</p>
+
+<pre><code>    var content = apply(this._mode = 'content');
+</code></pre>
+
+<p>мода вернула ctx.content по умолчанию</p>
+
+<pre><code>    if(content || content === 0) {
+      var isBEM = this.block || this.elem;
+</code></pre>
+
+<p><code>isBEM</code> ~ мы внутри шаблона бэм-сущности</p>
+
+<pre><code>      apply(
+        this._notNewList = false,
+</code></pre>
+
+<p>другими словами, <code>newList=true</code></p>
+
+<pre><code>        this.position = isBEM ? 1 : this.position,
+</code></pre>
+
+<p>А что было раньше в this.position?</p>
+
+<pre><code>        this._listLength = isBEM ? 1 : this._listLength,
+        this.ctx = content,
+        this._mode = '');
+    }
+
+    tag &amp;&amp; buf.push('&lt;/', tag, '&gt;');
+  }
+}
+</code></pre>
+
+<p>С главным все!</p>
+
+<p>Теперь можно разобрать работу оптимизации. Поидее, они должны быть
+прозрачны для построения своих шаблонов поверх базового, так что это
+ параграф со звездочкой.</p>
+
+<h4>Оптимизации</h4>
+
+<h5>Указатель на данные</h5>
+
+<pre><code>this.ctx &amp;&amp; !this._.isSimple(this.ctx) &amp;&amp; this.ctx.link: {
+  function follow() {
+    if (this.ctx.link === 'no-follow') return;
+
+    var data = this._links[this.ctx.link];
+    return apply(this.ctx = data);
+  }
+
+  if (!cache || !this._cacheLog) return follow.call(this);
+
+  // Get contents that should be cached
+  var contents = this._buf.slice(this._cachePos).join('');
+
+  // Move buffer position forward
+  this._cachePos = this._buf.length;
+
+  this._cacheLog.push(
+    // static cache entry
+    contents,
+
+    // dynamic entry
+    {
+      log: this._localLog.slice(),
+      link: this.ctx.link
+    }
+  );
+
+  var res = follow.call(this);
+
+  // Skip non-cacheable contents
+  this._cachePos = this._buf.length;
+
+  return res;
+}
+</code></pre>
+
+<h5>Кэш</h5>
+
+<pre><code>cache &amp;&amp; this.ctx &amp;&amp; this.ctx.cache: {
+  var cached;
+
+  // setProperty(obj, ['nested', 'key'], 'value')
+  function setProperty(obj, key, value) {
+    if (key.length === 0) return;
+
+    if (Array.isArray(value)) {
+      var target = obj;
+      for (var i = 0; i &lt; value.length - 1; i++) {
+        target = target[value[i]];
+      }
+      value = target[value[i]];
+    }
+
+    var host = obj, previous;
+
+    for (var i = 0; i &lt; key.length - 1; i++) {
+      host = host[key[i]];}
+
+    previous = host[key[i]];
+    host[key[i]] = value;
+
+    return previous;}
+
+  if (cached = cache.get(this.ctx.cache)) {
+    // Cache hit
+    for (var i = 0; i &lt; cached.log.length; i++) {
+      if (typeof cached.log[i] === 'string') {
+        this._buf.push(cached.log[i]);
+        continue;}
+
+      // Apply log and create reverse movement
+      var log = cached.log[i], reverseLog;
+
+      reverseLog = log.log.map(function(entry){
+        return {
+          key: entry[0],
+          value: setProperty(this, entry[0], entry[1])};},
+                               this).reverse();
+
+      // Generate content
+      apply(this.ctx.cache = null,
+            this._cacheLog = null,
+            this.ctx.link = log.link);
+
+      // Revert changes
+      reverseLog.forEach(function(entry) {
+        setProperty(this, entry.key, entry.value)
+      }, this);}
+    return cached.res;
+  }
+
+  // Record log
+  var cacheLog = [],
+  res;
+
+  local(this.ctx.cache = null,
+        this._cachePos = this._buf.length,
+        this._cacheLog = cacheLog,
+        this._localLog = []) {
+    res = apply();
+
+    var tail = this._buf.slice(this._cachePos).join('');
+    if (tail) cacheLog.push(tail);
+  }
+
+  // And set cache
+  cache.set(this.ctx.cache, { log: cacheLog, res: res });
+
+  return res;
+}
 </code></pre>
 
 </body>
