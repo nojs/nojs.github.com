@@ -57,7 +57,7 @@ isSimple(this.ctx), потом !this.ctx, потом this._.isArray(this.ctx) и
       i = 0,
       prevPos = this.position,
       prevNotNewList = this._notNewList;
-Очень хитро!
+Почему-то:
 
       if(prevNotNewList) {
         this._listLength += l - 1;
@@ -67,10 +67,12 @@ isSimple(this.ctx), потом !this.ctx, потом this._.isArray(this.ctx) и
       }
 
       this._notNewList = true;
+Итерация!
 
       while(i < l)
         apply(this.ctx = v[i++]);
 
+восстановим `.position`, если не `prevNotNewList`:
       prevNotNewList || (this.position = prevPos);
     }
 
