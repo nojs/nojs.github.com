@@ -42,7 +42,7 @@
       return t === 'string' || t === 'number' || t === 'boolean';
     };
 
-контекст установлен, но не `boolean` -- положим его в буфер:
+контекст установлен, но не `boolean` -- положим его значение в буфер:
 
     this._.isSimple(this.ctx): {
       this._listLength--;
