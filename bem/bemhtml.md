@@ -69,7 +69,8 @@ isSimple(this.ctx), потом !this.ctx, потом this._.isArray(this.ctx) и
       }
 
       this._notNewList = true;
-И итерация!
+И итерация по элементам массива! (В том числе если сюда передан
+ctx.content) 
 
       while(i < l)
         apply(this.ctx = v[i++]);
