@@ -43,9 +43,9 @@
 };
 </code></pre>
 
-<p>Первым (на старте) обрабатывается шаблон с !this.<em>mode: сначала
-isSimple(this.ctx), потом !this.ctx, потом this.</em>.isArray(this.ctx) и потом
-режим по-умолчанию true.</p>
+<p>Первым (на старте) обрабатывается шаблон с <code>!this._mode</code>: сначала
+<code>isSimple(this.ctx)</code>, потом <code>!this.ctx</code>, потом <code>this._.isArray(this.ctx)</code> и потом
+режим по-умолчанию <code>true</code>.</p>
 
 <p>Начнем со случая, когда текущий контекст -- простое значение, а
 именно, согласно isSimple, когда ctx -- строка, число или boolean.</p>
