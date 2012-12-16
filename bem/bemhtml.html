@@ -13,13 +13,13 @@
 
 <p><link rel="stylesheet" href="/css/markdown.css"></link></p>
 
-<h2>Супер-шаблонизатор!</h2>
+<h2>BEMHTML Inside Out</h2>
 
-<p>Отправляюсь вместе с вами в путешествие. Сейчас, когда я пишу эти
-строки, bemhtml кажется мне далеким и неизведанным островом, покрытым
-таинственными и опасными джунглями.</p>
+<p>Что внутри черного ящика?</p>
 
 <h3>Шаблон по-умолчанию</h3>
+
+<p>Прочитаем bemhtml.bemhtml.</p>
 
 <h4>Инициализация</h4>
 
@@ -43,12 +43,14 @@
 };
 </code></pre>
 
-<p>Первым (на старте) обрабатывается шаблон с <code>!this._mode</code>: сначала
-<code>isSimple(this.ctx)</code>, потом <code>!this.ctx</code>, потом <code>this._.isArray(this.ctx)</code> и потом
-режим по-умолчанию <code>true</code>.</p>
+<h4>Шаблоны</h4>
 
-<p>Начнем со случая, когда текущий контекст -- простое значение, а
-именно, согласно isSimple, когда ctx -- строка, число или boolean.</p>
+<p>Первым (на старте) обрабатывается шаблон с <code>!this._mode</code>, реализующий
+моду ''. В нем есть предикаты <code>isSimple(this.ctx)</code>, потом <code>!this.ctx</code>, потом <code>this._.isArray(this.ctx)</code> и потом
+предикат по умолчанию <code>true</code>.</p>
+
+<p>Начнем наш grok со случая, когда текущий контекст -- простое значение, а
+именно, согласно <code>_.isSimple</code>, когда ctx -- строка, число или boolean.</p>
 
 <pre><code>BEMContext.prototype.isSimple = function isSimple(obj) {
   var t = typeof obj;
@@ -56,7 +58,7 @@
 };
 </code></pre>
 
-<p>контекст установлен, но не <code>boolean</code> -- положим его значение в буфер:</p>
+<p>Если контекст установлен, но не <code>boolean</code> -- положим его значение в буфер:</p>
 
 <pre><code>this._.isSimple(this.ctx): {
   this._listLength--;
@@ -88,7 +90,7 @@
   this._notNewList = true;
 </code></pre>
 
-<p>И итерация по элементам массива! (В том числе если сюда передан
+<p>И итерация по элементам массива! (В том числе если он сюда передан
 ctx.content) </p>
 
 <pre><code>  while(i &lt; l)
@@ -377,7 +379,9 @@ ctx.content) </p>
 
 <h4>Оптимизации</h4>
 
-<h5>Указатель на данные</h5>
+<p>TODO Разобрать работу оптимизаций</p>
+
+<h5>Связывание данные</h5>
 
 <pre><code>this.ctx &amp;&amp; !this._.isSimple(this.ctx) &amp;&amp; this.ctx.link: {...}
 </code></pre>
