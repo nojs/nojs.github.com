@@ -58,6 +58,7 @@ isSimple(this.ctx), потом !this.ctx, потом this._.isArray(this.ctx) и
       prevPos = this.position,
       prevNotNewList = this._notNewList;
 Очень хитро!
+
       if(prevNotNewList) {
         this._listLength += l - 1;
       } else {
