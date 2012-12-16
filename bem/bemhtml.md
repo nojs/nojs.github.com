@@ -173,16 +173,21 @@ I wonder what if not?
 
         var cls = apply(this._mode = 'cls');
         cls || (cls = v.cls);
-Установили класс через моду или взяли из контекста
+Установили класс через моду или взяли прямо из контекста
 
         var addJSInitClass = v.block && jsParams;
         if(isBEM || cls) {
+Теперь будем создавать имя класса.
+
           buf.push(' class="');
           if(isBEM) {
+А если не `isBEM`, то в классе будет только `i-bem` (если это понадобится)
+
             BEM_.INTERNAL.buildClasses(this.block, v.elem, v.elemMods || v.mods, buf);
 
             var mix = apply(this._mode = 'mix');
             v.mix && (mix = mix? mix.concat(v.mix) : v.mix);
+Миксин делаем здесь!
 
             if(mix) {
               var visited = {};
@@ -238,6 +243,7 @@ I wonder what if not?
           addJSInitClass && buf.push(' i-bem');
           buf.push('"');
         }
+Построим onclick-хак для передачи js-параметров
 
         if(jsParams) {
           var jsAttr = apply(this._mode = 'jsAttr');
@@ -246,6 +252,7 @@ I wonder what if not?
             this._.attrEscape(JSON.stringify(jsParams)),
             '"');
         }
+Построим аттрибуты из словаря `ctx.attrs`
 
         var attrs = apply(this._mode = 'attrs');
         attrs = this._.extend(attrs, v.attrs); // NOTE: возможно стоит делать массив, чтобы потом быстрее сериализовывать
@@ -253,22 +260,29 @@ I wonder what if not?
           var name; // TODO: разобраться с OmetaJS и YUI Compressor
           for(name in attrs) {
             if (attrs[name] === undefined) continue;
-            buf.push(' ', name, '="', this._.attrEscape(attrs[name]), '"');
-          }
-        }
-      }
+            buf.push(' ', name, '="', this._.attrEscape(attrs[name]), '"');}}}
+Построили тэг. Если это был короткий тэг, тут же его закроем:
 
       if(this._.isShortTag(tag)) {
         buf.push('/>');
       } else {
         tag && buf.push('>');
+А здесь построим контент для полного тэга.
 
         var content = apply(this._mode = 'content');
+мода вернула ctx.content по умолчанию
+
         if(content || content === 0) {
           var isBEM = this.block || this.elem;
+`isBEM` ~ мы внутри шаблона бэм-сущности
+
           apply(
             this._notNewList = false,
-            this.position = isBEM ? 1 : this.position,
+другими словами, `newList=true`
+
+            this.position = isBEM ? 1 : this.position,  
+А что было раньше в this.position?
+
             this._listLength = isBEM ? 1 : this._listLength,
             this.ctx = content,
             this._mode = '');
