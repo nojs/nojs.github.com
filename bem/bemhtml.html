@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>bemhtml.md</title>
+
+</head>
+
+<body>
+
+<p><link rel="stylesheet" href="/css/markdown.css"></link></p>
+
+<h2>Супер-шаблонизатор!</h2>
+
+<p>Отправляюсь вместе с вами в путешествие. Сейчас, когда я пишу эти
+строки, bemhtml кажется мне далеким и неизведанным островом, покрытым
+таинственными и опасными джунглями.</p>
+
+<h3>Шаблон по-умолчанию</h3>
+
+<p>создадим контекст шаблона</p>
+
+<p>```
+  function BEMContext(context, apply<em>) {
+    this.ctx = context;
+    this.apply = apply</em>;
+    this.<em>buf = [];
+    this.</em> = this;</p>
+
+<pre><code>// Stub out fields that will be used later
+this._start = true;
+this._mode = '';
+this._listLength = 0;
+this._notNewList = false;
+this.position = 0;
+this.block = undefined;
+this.elem = undefined;
+this.mods = undefined;
+this.elemMods = undefined;
+</code></pre>
+
+<p>};</p>
+
+<p>```</p>
+
+</body>
+</html>
