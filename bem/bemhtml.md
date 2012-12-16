@@ -10,9 +10,7 @@
 
 создадим контекст шаблона
 
-{
-  {
-  
+
     function BEMContext(context, apply_) {
       this.ctx = context;
       this.apply = apply_;
@@ -29,8 +27,8 @@
       this.mods = undefined;
       this.elemMods = undefined;
     };
-  }
-}
+
+
 
 
 
