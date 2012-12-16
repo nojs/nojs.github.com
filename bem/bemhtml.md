@@ -8,6 +8,8 @@
 
 ### Шаблон по-умолчанию
 
+#### Инициализация
+
 Создадим контекст шаблона:
 
     function BEMContext(context, apply_) {
@@ -72,18 +74,20 @@ isSimple(this.ctx), потом !this.ctx, потом this._.isArray(this.ctx) и
       while(i < l)
         apply(this.ctx = v[i++]);
 восстановим `.position`, если не `prevNotNewList`:
+(если prevNewList)
 
       prevNotNewList || (this.position = prevPos);
     }
 Теперь случай по-умолчанию:
 
     true: {
-      var vBlock = this.ctx.block,
+      var vBlock = this.ctx.block, //XXX если когда-либо нужна проверка [1.0] то
+                                   //здесь this.ctx будет undefined
       vElem = this.ctx.elem,
-Для чего нужны vThing?
+Для чего нужны vThing? (Ответ: v используется как сокращение this.ctx)
 
       block = this._currBlock || this.block;
-      this.ctx || (this.ctx = {});
+      this.ctx || (this.ctx = {}); //[1.0]
 Создадим контекст!
 
       local(
@@ -110,7 +114,6 @@ isSimple(this.ctx), потом !this.ctx, потом this._.isArray(this.ctx) и
 Модификаторы элемента!
 
       ) {
-
 Что значат эти {} после local? Видимо, это его scope?
 
         (this.block || this.elem) ?
@@ -121,6 +124,160 @@ isSimple(this.ctx), потом !this.ctx, потом this._.isArray(this.ctx) и
         apply();
       }
     } 
+
+#### Мода `default`
+
+    default: {
+      var _this = this,
+      BEM_ = _this.BEM,
+      v = this.ctx,
+      buf = this._buf,
+      tag;
+Мода `tag` возвратит тэг из пользовательского шаблона или `undefined`,
+и тогда установим ее в `div`:
+
+      tag = apply(this._mode = 'tag');
+      typeof tag === 'undefined' && (tag = v.tag);
+      typeof tag === 'undefined' && (tag = 'div');
+
+      if(tag) {
+I wonder what if not?
+
+        var jsParams, js;
+        if(this.block && v.js !== false) {        //ok: we go for js mode
+                                               //  if it's in ctx
+          js = apply(this._mode = 'js');          //ok
+          js = js?                             //ok if(js)
+                 this._.extend(v.js,              //ok extend ctx.js with js
+                            js === true?
+                              {} :
+                              js) :
+                 v.js === true?                //ok set js to {}
+                   {} :                        //  or to ctx.js
+                   v.js;                       //  if(ctx.js &&
+                                               //     ctx.js!==true)
+          js && (
+            (jsParams = {})[
+              BEM_.INTERNAL.buildClass(this.block, v.elem)] = js);}
+`{"b-bla__e-elt":js}`
+
+        buf.push('<', tag);  //ok
+
+        var isBEM = apply(this._mode = 'bem'); //XXX
+Что такое `bem` мода? Является ли контекст блоком или элементом?
+
+        typeof isBEM === 'undefined' &&
+          (isBEM = typeof v.bem === 'undefined' ?
+            v.block || v.elem :
+            v.bem);
+
+        var cls = apply(this._mode = 'cls');
+        cls || (cls = v.cls);
+Установили класс через моду или взяли из контекста
+
+        var addJSInitClass = v.block && jsParams;
+        if(isBEM || cls) {
+          buf.push(' class="');
+          if(isBEM) {
+            BEM_.INTERNAL.buildClasses(this.block, v.elem, v.elemMods || v.mods, buf);
+
+            var mix = apply(this._mode = 'mix');
+            v.mix && (mix = mix? mix.concat(v.mix) : v.mix);
+
+            if(mix) {
+              var visited = {};
+
+              function visitedKey(block, elem) {
+                return (block || '') + '__' + (elem || '');}
+
+              visited[visitedKey(this.block, this.elem)] = true;
+
+              // Transform mix to the single-item array if it's not array
+              if (!this._.isArray(mix)) mix = [mix];
+              for (var i = 0; i < mix.length; i++) {
+                var mixItem = mix[i],
+                hasItem = mixItem.block || mixItem.elem,
+                block = mixItem.block || mixItem._block || _this.block,
+                elem = mixItem.elem || mixItem._elem || _this.elem;
+
+                hasItem && buf.push(' ');
+                BEM_.INTERNAL[hasItem? 'buildClasses' : 'buildModsClasses'](
+                  block,
+                  mixItem.elem || mixItem._elem ||
+                    (mixItem.block ? undefined : _this.elem),
+                  mixItem.elemMods || mixItem.mods,
+                  buf);
+
+                if(mixItem.js) {
+                  (jsParams || (jsParams = {}))[BEM_.INTERNAL.buildClass(block, mixItem.elem)] = mixItem.js === true? {} : mixItem.js;
+                  addJSInitClass || (addJSInitClass = block && !mixItem.elem);}
+
+                // Process nested mixes
+                if (hasItem && !visited[visitedKey(block, elem)]) {
+                  visited[visitedKey(block, elem)] = true;
+                  var nestedMix = apply(
+                    this.block = block,
+                    this.elem = elem,
+                    'mix');
+
+                  if (nestedMix) {
+                    for (var j = 0; j < nestedMix.length; j++) {
+                      var nestedItem = nestedMix[j];
+                      if (!nestedItem.block &&
+                          !nestedItem.elem ||
+                          !visited[visitedKey(
+                            nestedItem.block,
+                            nestedItem.elem
+                          )]) {
+                        nestedItem._block = block;
+                        nestedItem._elem = elem;
+                        mix.splice(i + 1, 0, nestedItem);}}}}}}}
+
+          cls && buf.push(isBEM? ' ' : '', cls);
+
+          addJSInitClass && buf.push(' i-bem');
+          buf.push('"');
+        }
+
+        if(jsParams) {
+          var jsAttr = apply(this._mode = 'jsAttr');
+          buf.push(
+            ' ', jsAttr || 'onclick', '="return ',
+            this._.attrEscape(JSON.stringify(jsParams)),
+            '"');
+        }
+
+        var attrs = apply(this._mode = 'attrs');
+        attrs = this._.extend(attrs, v.attrs); // NOTE: возможно стоит делать массив, чтобы потом быстрее сериализовывать
+        if(attrs) {
+          var name; // TODO: разобраться с OmetaJS и YUI Compressor
+          for(name in attrs) {
+            if (attrs[name] === undefined) continue;
+            buf.push(' ', name, '="', this._.attrEscape(attrs[name]), '"');
+          }
+        }
+      }
+
+      if(this._.isShortTag(tag)) {
+        buf.push('/>');
+      } else {
+        tag && buf.push('>');
+
+        var content = apply(this._mode = 'content');
+        if(content || content === 0) {
+          var isBEM = this.block || this.elem;
+          apply(
+            this._notNewList = false,
+            this.position = isBEM ? 1 : this.position,
+            this._listLength = isBEM ? 1 : this._listLength,
+            this.ctx = content,
+            this._mode = '');
+        }
+
+        tag && buf.push('</', tag, '>');
+      }
+    }
+
 
 
 
