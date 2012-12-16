@@ -42,7 +42,7 @@ isSimple(this.ctx), потом !this.ctx, потом this._.isArray(this.ctx) и
       return t === 'string' || t === 'number' || t === 'boolean';
     };
 
-контекст установлен, но не булев -- положим его в буфер:
+контекст установлен, но не `boolean` -- положим его в буфер:
 
     this._.isSimple(this.ctx): {
       this._listLength--;
@@ -74,13 +74,13 @@ ctx.content)
 
       while(i < l)
         apply(this.ctx = v[i++]);
-восстановим `.position`, если не `prevNotNewList`:
+восстановим `.position`, если не `prevNotNewList`
 (если prevNewList, другими словами, т.е. когда в ситуации массив в
-массиве мы закончили обрабатывать вложенный массив)
+массиве мы закончили обрабатывать вложенный массив):
 
       prevNotNewList || (this.position = prevPos);
     }
-Теперь случай по-умолчанию:
+Теперь случай по умолчанию:
 
     true: {
       var vBlock = this.ctx.block, //XXX если когда-либо нужна проверка [1.0] то
@@ -189,7 +189,7 @@ I wonder what if not?
 
             var mix = apply(this._mode = 'mix');
             v.mix && (mix = mix? mix.concat(v.mix) : v.mix);
-Миксин делаем здесь!
+Миксин делаем здесь! TODO: describe mixin production
 
             if(mix) {
               var visited = {};
