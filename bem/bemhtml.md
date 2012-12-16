@@ -310,7 +310,7 @@ threatening unexplained mysteries in reference.
 
 TODO Разобрать работу оптимизаций
 
-##### Связывание данные
+##### Linked data
 
     this.ctx && !this._.isSimple(this.ctx) && this.ctx.link: {...}
 
