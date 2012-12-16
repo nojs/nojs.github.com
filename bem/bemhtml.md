@@ -67,7 +67,7 @@ isSimple(this.ctx), потом !this.ctx, потом this._.isArray(this.ctx) и
       }
 
       this._notNewList = true;
-Итерация!
+И итерация!
 
       while(i < l)
         apply(this.ctx = v[i++]);
@@ -75,6 +75,54 @@ isSimple(this.ctx), потом !this.ctx, потом this._.isArray(this.ctx) и
 
       prevNotNewList || (this.position = prevPos);
     }
+Теперь случай по-умолчанию:
+
+    true: {
+      var vBlock = this.ctx.block,
+      vElem = this.ctx.elem,
+Для чего нужны vThing?
+
+      block = this._currBlock || this.block;
+      this.ctx || (this.ctx = {});
+Создадим контекст!
+
+      local(
+        this._mode = 'default',
+Это первая мода
+
+        this._links = this.ctx.links || this._links,
+Возьмем `links` из контекста. Если они там есть.
+        
+        this.block = vBlock || (vElem ? block : undefined),
+        //vBlock || if(vElem) {block} else {undefined}
+        
+        this._currBlock = vBlock || vElem ? undefined : block,
+Наверное, это блок для обработки элемента:
+Если обрабатываем элемент, это или текущий блок с
+верхнего уровня, или блок текущего уровня. (Да,
+но кто устанавливает this.block?)
+        
+        this.elem = this.ctx.elem, //ok
+        this.mods = (vBlock ? this.ctx.mods : this.mods) || {},
+Как и почему определяем здесь модификаторы?
+
+        this.elemMods = this.ctx.elemMods || {}
+Модификаторы элемента!
+
+      ) {
+
+Что значат эти {} после local? Видимо, это его scope?
+
+        (this.block || this.elem) ?
+          (this.position = (this.position || 0) + 1) :
+          this._listLength--;
+Туннелируем в моду default!
+
+        apply();
+      }
+    } 
+
+
 
 
 
