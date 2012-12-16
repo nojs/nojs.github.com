@@ -71,8 +71,8 @@ isSimple(this.ctx), потом !this.ctx, потом this._.isArray(this.ctx) и
 
       while(i < l)
         apply(this.ctx = v[i++]);
-
 восстановим `.position`, если не `prevNotNewList`:
+
       prevNotNewList || (this.position = prevPos);
     }
 
