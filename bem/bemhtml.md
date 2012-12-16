@@ -10,25 +10,30 @@
 
 создадим контекст шаблона
 
-```
-  function BEMContext(context, apply_) {
-    this.ctx = context;
-    this.apply = apply_;
-    this._buf = [];
-    this._ = this;
+{
+  {
+  
+    function BEMContext(context, apply_) {
+      this.ctx = context;
+      this.apply = apply_;
+      this._buf = [];
+      this._ = this;
 
-    // Stub out fields that will be used later
-    this._start = true;
-    this._mode = '';
-    this._listLength = 0;
-    this._notNewList = false;
-    this.position = 0;
-    this.block = undefined;
-    this.elem = undefined;
-    this.mods = undefined;
-    this.elemMods = undefined;
-  };
+      this._start = true;
+      this._mode = '';
+      this._listLength = 0;
+      this._notNewList = false;
+      this.position = 0;
+      this.block = undefined;
+      this.elem = undefined;
+      this.mods = undefined;
+      this.elemMods = undefined;
+    };
+  }
+}
 
-```
+
+
+
 
 
